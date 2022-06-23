@@ -1,0 +1,11 @@
+---
+- name: Install Application
+  hosts: apiservers
+  tasks:
+    - name: Create Directory Binaries
+      file:
+        path: /opt/application/v1/bin
+        state: directory
+        owner: kali
+        group: kali
+        mode: 0750

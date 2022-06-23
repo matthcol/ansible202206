@@ -30,5 +30,33 @@
         owner: kali
         group: kali
         mode: 0750
+    - name: Java Toolkit Stack
+      apt:
+        name: openjdk-11-jdk
+        state: present 
   become: yes
   become_method: sudo
+
+- name: DB Installation
+  hosts: dbservers
+  tasks:
+    - name: DB Server
+      apt:
+        name: postgresql-14
+        state: present
+      become: yes
+      become_method: sudo
+    - name: Start DB Auto
+      systemd:
+        name: postgresql
+        state: started
+        enabled: yes
+      become: yes
+      become_method: sudo
+
+
+
+
+
+
+

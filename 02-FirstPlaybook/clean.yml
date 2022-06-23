@@ -1,0 +1,10 @@
+---
+- name: DeInstall Application
+  hosts: apiservers
+  tasks:
+    - name: Remove Directories
+      file:
+        path: /opt/application
+        state: absent
+  become: yes
+  become_method: sudo

@@ -9,3 +9,26 @@
         owner: kali
         group: kali
         mode: 0750
+    - name: Create Directory Logs
+      file:
+        path: /opt/application/v1/log
+        state: directory
+        owner: kali
+        group: kali
+        mode: 0750
+    - name: Create link with this version
+      file:
+        path: /opt/application/latest
+        src: /opt/application/v1
+        state: link
+        owner: kali
+        group: kali
+    - name: Copy appli artifact
+      copy:
+        src: repo_artifacts/appli
+        dest: /opt/application/v1/bin
+        owner: kali
+        group: kali
+        mode: 0750
+  become: yes
+  become_method: sudo

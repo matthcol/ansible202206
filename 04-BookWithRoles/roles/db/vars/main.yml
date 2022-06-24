@@ -1,0 +1,11 @@
+db_package: postgresql-14
+db_service: postgresql
+
+# list defined with python syntax
+#db_tables: [ 'movies', 'stars', 'play' ] 
+
+# list defined with yaml syntax
+db_tables:
+  - movies
+  - stars
+  - play

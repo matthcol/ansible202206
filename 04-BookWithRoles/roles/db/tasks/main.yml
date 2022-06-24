@@ -1,9 +1,34 @@
-- name: DB Server
+- name: DB Server APT
   apt:
     name: "{{ db_package}}"
     state: present
+  when: ansible_facts['os_family'] == 'Debian'
+  tags:
+    install
+- name: DB Server APT
+  yum:
+    name: "{{ db_package}}"
+    state: present
+  when: ansible_facts['os_family'] == 'RedHat'
+  tags:
+    install
 - name: Start DB Auto
   systemd:
     name: "{{ db_service }}"
     state: started
     enabled: yes
+  notify: 
+    - db check
+- name: Debug DB Content
+  debug:
+    msg: "table: {{ item }}"
+  loop: "{{ db_tables }}"
+- name: Debug DB Content (2nd part)
+  debug:
+    msg: "table: {{ item.name }} ; primary key: {{ item.pk }}"
+    #msg: "table: {{ item['name'] }} ; primary key: {{ item['pk'] }}"
+  loop:
+    - { name: movies, pk: id_movie }
+    - { name: stars, pk: id_star }
+    - { name: play, pk: id_play }
+

@@ -1,0 +1,7 @@
+---
+- name: Schroedinger definition 1
+  debug:
+    msg: "Schroedinger definition step 1"
+- name: Schroedinger definition 2
+  debug:
+    msg: "Schroedinger definition step 2"

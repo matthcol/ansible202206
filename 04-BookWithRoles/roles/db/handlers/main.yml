@@ -1,0 +1,15 @@
+---
+# handler with name equals to event
+#- name: db check
+#  debug:
+#    msg: "Check DB"
+
+- name: check 1
+  debug:
+    msg: "Check DB 1"
+  listen: db check
+
+
+- name: check 2
+  include_tasks: tasks/db_check.yml
+  listen: db check

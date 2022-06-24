@@ -1,0 +1,14 @@
+---
+- name: DeInstall Application
+  hosts: apiservers
+  tasks:
+    - name: Remove Directories
+      file:
+        path: /opt/application
+        state: absent
+    - name: Desinstall JDK
+      apt:
+        name: openjdk-11-jdk
+        state: absent
+  become: yes
+  become_method: sudo

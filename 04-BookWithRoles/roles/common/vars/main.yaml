@@ -1,0 +1,6 @@
+db_vendor: postgresql
+db_dbname: dbmovie
+db_port: 5432
+db_user: movie
+db_password: superpassword
+

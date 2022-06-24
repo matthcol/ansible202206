@@ -1,3 +1,13 @@
+- name: Print all available facts
+  debug:
+    #var: ansible_facts
+    msg:
+      - "distribution: {{ ansible_facts['distribution'] }}"
+      - "distribution major version: {{ ansible_facts['distribution_major_version'] }}"
+      - "os family: {{ ansible_facts['os_family'] }}"
+      #- "hosts: {{ hostvars }}"
+      - "groups: {{ groups }}"
+      - "group db: {{ groups['dbservers'][0] }}"
 - name: Create Directory Binaries
   file:
     path: "{{ appli_dir }}/bin"
@@ -21,12 +31,25 @@
     group: "{{ appli_group }}"
 - name: Copy appli artifact
   copy:
-    src: appli
+    src: "{{ item }}"
     dest: "{{ appli_dir }}/bin"
     owner: "{{ appli_user }}"
     group: "{{ appli_group }}"
-    mode: "{{ appli_dir_exe_mode }}"
+    mode: preserve
+  loop:
+    - appli.sh
+    - movieapi.jar
+- name: Copy Spring properties file
+  template:
+    src: application.properties.j2
+    dest: "{{ appli_dir }}/bin/application.properties"
+    owner: "{{ appli_user }}"
+    group: "{{ appli_group }}"
+    mode: preserve
 - name: Java Toolkit Stack
   apt:
     name: openjdk-11-jdk
     state: present 
+  tags:
+    install
+  when: ansible_facts['os_family'] == 'Debian'

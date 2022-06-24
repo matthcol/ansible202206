@@ -1,0 +1,16 @@
+---
+- name: db exists
+  command: psql -c "select * from pg_database where datname = '{{ db_dbname }}'"
+  register: db_exist
+  become: yes
+  become_user: postgres
+  become_method: sudo
+- name: debug db exists
+  debug:
+    msg: "{{ db_exist.stdout }}"
+- name: create database
+  command: psql -c "create database {{ db_dbname }}"
+  when: "'0 rows' in db_exist.stdout"
+  become: yes
+  become_user: postgres
+  become_method: sudo

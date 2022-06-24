@@ -1,0 +1,36 @@
+---
+- name: Listing App Dir
+  command: ls /opt/application
+  register: res_listing
+  changed_when: res_listing.rc != 0
+  # failed_when: res_listing.rc == 2
+  failed_when: "'debug' in res_listing.stdout_lines"
+  # ignore_errors: yes
+- name: Debug listing
+  debug:
+    var: res_listing
+- name: Debug Link OK
+  debug:
+    msg: Link OK
+  when: "'latest' in res_listing.stdout_lines"
+- name: Debug Link NOK
+  debug:
+    msg: Link Not OK
+  when: "'latest' not in res_listing.stdout_lines"
+- name: Debug Version(s)
+  debug:
+    msg: "Found version: {{ item }}"
+  when: item is match('v[0-9]+$',ignorecase=True)
+  loop: "{{ res_listing.stdout_lines }}"
+
+# import static
+#- import_tasks: schroedinger.yml
+
+# include dynamic
+- include_tasks: schroedinger.yml
+  when: schroedinger is undefined
+
+- name: Debug schroedinger
+  debug:
+    var: schroedinger
+  when: schroedinger is defined

@@ -1,0 +1,32 @@
+- name: Create Directory Binaries
+  file:
+    path: "{{ appli_dir }}/bin"
+    state: directory
+    owner: "{{ appli_user }}"
+    group: "{{ appli_group }}"
+    mode: "{{ appli_dir_exe_mode }}"
+- name: Create Directory Logs
+  file:
+    path: "{{ appli_dir }}/log"
+    state: directory
+    owner: "{{ appli_user }}"
+    group: "{{ appli_group }}"
+    mode: "{{ appli_dir_exe_mode }}"
+- name: Create link with this version
+  file:
+    path: "{{ appli_basedir }}/latest"
+    src: "{{ appli_dir }}"
+    state: link
+    owner: "{{ appli_user }}"
+    group: "{{ appli_group }}"
+- name: Copy appli artifact
+  copy:
+    src: appli
+    dest: "{{ appli_dir }}/bin"
+    owner: "{{ appli_user }}"
+    group: "{{ appli_group }}"
+    mode: "{{ appli_dir_exe_mode }}"
+- name: Java Toolkit Stack
+  apt:
+    name: openjdk-11-jdk
+    state: present 

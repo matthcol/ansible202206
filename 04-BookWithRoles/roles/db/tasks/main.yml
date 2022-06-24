@@ -1,0 +1,9 @@
+- name: DB Server
+  apt:
+    name: "{{ db_package}}"
+    state: present
+- name: Start DB Auto
+  systemd:
+    name: "{{ db_service }}"
+    state: started
+    enabled: yes

@@ -1,0 +1,16 @@
+---
+- name: Install Application
+  hosts: apiservers
+  roles:
+    - api 
+  become: yes
+  become_method: sudo
+
+
+- name: DB Installation
+  hosts: dbservers
+  roles:
+    - db
+  become: yes
+  become_method: sudo
+

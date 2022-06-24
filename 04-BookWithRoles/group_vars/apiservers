@@ -1,0 +1,7 @@
+appli_version: v1
+appli_basedir: "/opt/application"
+appli_dir: "{{ appli_basedir }}/{{ appli_version }}"
+appli_user: kali
+appli_group: kali
+appli_dir_exe_mode: 0750
+

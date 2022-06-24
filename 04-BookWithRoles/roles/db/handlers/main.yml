@@ -11,5 +11,8 @@
 
 
 - name: check 2
-  include_tasks: tasks/db_check.yml
+  #include_tasks: tasks/db_check.yml
+  include_tasks: tasks/db_check_pg.yml
   listen: db check
+
+#TODO: check conditional with db vendor: postgresql, mariadb, ...

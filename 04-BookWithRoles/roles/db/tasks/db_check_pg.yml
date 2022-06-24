@@ -1,0 +1,37 @@
+---
+- name: conf db server, create db and user
+  block:
+    - name: create db
+      community.postgresql.postgresql_db:
+        name: "{{ db_dbname }}"
+        encoding: UTF-8
+    - name: create db user
+      community.postgresql.postgresql_user:
+        name: "{{ db_user }}"
+        password: "{{ db_password }}"
+        role_attr_flags: LOGIN
+    - name: db listener
+      community.postgresql.postgresql_set:
+        name: listen_addresses
+        value: '*'
+        #reset: yes
+      register: setdb
+    - name: db network filtering
+      community.postgresql.postgresql_pg_hba:
+        dest: /etc/postgresql/14/main/pg_hba.conf
+        contype: host
+        users: "{{ db_user }}"
+        source: 192.168.56.0/24
+        databases: "{{ db_dbname }}"
+        method: scram-sha-256
+        state: present
+  become: yes
+  become_user: postgres
+  become_method: sudo
+- name: restart db server if necessary
+  systemd:
+    name: postgresql
+    state: restarted
+  when: setdb.changed and setdb.restart_required
+  become: yes
+  become_method: sudo
